@@ -30,13 +30,37 @@ function multiply(number1, number2){
 function divide(number1, number2){
     return number1 / number2;
 }
-function checkIfNumberIsTooLarge(number){
-    let numberAsString = number.toString();
-    if(numberAsString.length>=13){
+function getRoundedNumber(number,tobeFixedBy){
+    let roundedNumber = number.toFixed(tobeFixedBy);
+        return roundedNumber;
+}
+function isNumberTooLarge(number){
+    numberAsString = number.toString();
+    if(numberAsString.length>13){
         return true;
     }else{
         return false;
+    } 
+}
+function tryToMakeNumberFit(number){
+    if(isNumberTooLarge(number)){
+        if(!isNumberTooLarge(getRoundedNumber(number,4))){
+            number = getRoundedNumber(number,4);
+            number = parseFloat(number);
+            console.log("fixed at 4");
+        }else{
+            if(!isNumberTooLarge(getRoundedNumber(number,2))){
+                number = getRoundedNumber(number,2);
+                number = parseFloat(number);
+                console.log("fixed at 2");
+            }else{
+                console.log(number);
+                console.log("number too large");
+                number = NaN;
+            }
+        }
     }
+    return number;
 }
 function operate(number1, number2, operator){
     number1 = parseFloat(number1);
@@ -55,10 +79,8 @@ function operate(number1, number2, operator){
             result = divide(number1,number2);
             break;
     }   
-    if(checkIfNumberIsTooLarge(result)){
-        console.log("check reached");
-        result = NaN;
-    }
+    result = tryToMakeNumberFit(result);
+    
     savedResult = result;
     updateDisplay();
     clear();
@@ -111,11 +133,11 @@ function handleNumberButtonsEvent(e){
         handleCalculateBasedOnResult();
     }
     if(!isNumber1Set){
-        if(checkIfNumberIsTooLarge(number1))return;
+        if(isNumberTooLarge(number1*10))return;
         number1 +=e.textContent;
         updateDisplay();
     }else if(isNumber1Set && !isNumber2Set){
-        if(checkIfNumberIsTooLarge(number2))return;
+        if(isNumberTooLarge(number2*10))return;
         number2 +=e.textContent;
         updateDisplay();
     }
@@ -163,9 +185,9 @@ decimalButton.addEventListener("click", (event) => {
     if(caluculateBasedOnResult){
         handleCalculateBasedOnResult();
     }
-    if(!isNumber1Set&&!number1.includes(".")){
+    if(!isNumber1Set&&!number1.includes(".") &&number1!=""){
         number1+=".";
-    }else if(isNumber1Set && !isNumber2Set && !number2.includes(":")){
+    }else if(isNumber1Set && !isNumber2Set && !number2.includes(".") &&number2!=""){
         number2+=".";
     }
     updateDisplay();
