@@ -16,13 +16,44 @@ main{
 }
 #grid{
     display: grid;
-    grid-template-columns: repeat(4, minmax(100px, auto));
-    grid-template-rows: repeat(6, minmax(100px, auto));
+    grid-template-columns: repeat(4, minmax(105px, 100px));
+    grid-template-rows: repeat(6, minmax(105px, 100px));
+    border:10px solid black;
+    border-radius: 10px;
+    background-color: black;
 }
 #display{
     grid-row: 1;
     grid-column: 1 / span 4;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    font-family: 'Consolas', 'Courier New', 'Menlo', 'Monaco', 'Lucida Console', 'Inconsolata', monospace;
+    font-size: 50px;
+    font-weight: bold;
+    border:5px solid black;
+    background-color: gray;
 }
 #zero{
     grid-column: 1 / span 2;
+}
+button{
+    border-radius:8px;
+    font-size: 25px;
+    transition: background-color 0.2s ease, filter 0.2s ease;
+}
+button:active{
+    filter: brightness(150%);
+}
+.operator:focus{
+    filter: brightness(120%);
+}
+.sidebar{
+    background-color: orange;
+}
+.mainpanel{
+    background-color: darkcyan;
+}
+.topbar{
+    background-color: skyblue;
 }
