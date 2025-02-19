@@ -12,6 +12,7 @@ const numberButtons = document.querySelectorAll(".number");
 const operatorButtons = document.querySelectorAll(".operator");
 const equalsButton = document.querySelector("#equals");
 const decimalButton = document.querySelector("#decimal");
+const percentageButton = document.querySelector("#percentage")
 const clearButton = document.querySelector("#AC");
 const plusMinusButton = document.querySelector("#plus-minus");
 const display = document.querySelector("#display");
@@ -73,16 +74,25 @@ function updateDisplay(){
         display.textContent="0";
     }
 }
+function handleCalculateBasedOnResult(){
+    number1 = result;
+        result = "";
+        updateDisplay();
+        caluculateBasedOnResult = false;
+}
 function handleNumberButtonsEvent(e){
     console.log(isNumber1Set);
     console.log(isNumber2Set);
     console.log(isOperatorSet);
     if(caluculateBasedOnResult){
-        number1 = result;
-        result = "";
-        updateDisplay();
-        caluculateBasedOnResult = false;
-        return;
+        if(e.textContent == 0){
+            clear();
+            result = "";
+            caluculateBasedOnResult = false;
+            updateDisplay();
+            return;
+        }
+        handleCalculateBasedOnResult();
     }
     if(!isNumber1Set){
         number1 +=e.textContent;
@@ -120,3 +130,36 @@ equalsButton.addEventListener("click",(event)=>{
     }
 })
 clearButton.addEventListener("click",clear);
+decimalButton.addEventListener("click", (event) => {
+    if(caluculateBasedOnResult){
+        handleCalculateBasedOnResult();
+    }
+    if(!isNumber1Set&&!number1.includes(".")){
+        number1+=".";
+    }else if(isNumber1Set && !isNumber2Set && !number2.includes(":")){
+        number2+=".";
+    }
+    updateDisplay();
+})
+percentageButton.addEventListener("click",(event)=>{
+    if(caluculateBasedOnResult){
+        handleCalculateBasedOnResult();
+    }
+    if(!isNumber1Set){
+        number1 = number1 / 100;
+    }else if(isNumber1Set && !isNumber2Set){
+        number2 = number2 / 100;
+    }
+    updateDisplay();
+})
+plusMinusButton.addEventListener("click",(event)=>{
+    if(caluculateBasedOnResult){
+        handleCalculateBasedOnResult();
+    }
+    if(!isNumber1Set){
+        number1 = number1 * -1;
+    }else if(isNumber1Set && !isNumber2Set){
+        number2 = number2 *-1;
+    }
+    updateDisplay();
+})
