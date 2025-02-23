@@ -28,6 +28,7 @@ function multiply(number1, number2) {
   return number1 * number2;
 }
 function divide(number1, number2) {
+  if(number2 === 0) return "lmao";
   return number1 / number2;
 }
 //adjusts number size if necessary
@@ -163,7 +164,6 @@ function handleOperatorButtonEvent(e) {
   }
   if (number1 != "" && number2 == "") {
     operator = e.textContent;
-    console.log(operator);
     isOperatorSet = true;
     isNumber1Set = true;
     updateDisplay();
