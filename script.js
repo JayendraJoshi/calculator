@@ -7,7 +7,7 @@ let savedResult = "";
 let isNumber1Set = false;
 let isNumber2Set = false;
 let isOperatorSet = false;
-let shouldCalculateBasedOnResult = false;
+let previousResultExists = false;
 
 const numberButtons = document.querySelectorAll(".number");
 const operatorButtons = document.querySelectorAll(".operator");
@@ -76,7 +76,7 @@ function resetValuesForNewCalculation() {
 }
 function resetSavedResult() {
   savedResult = "";
-  shouldCalculateBasedOnResult = false;
+  previousResultExists = false;
 }
 //operates calculation
 function operate(number1, number2, operator) {
@@ -100,7 +100,7 @@ function operate(number1, number2, operator) {
   savedResult = result;
   updateDisplay();
   resetValuesForNewCalculation();
-  shouldCalculateBasedOnResult = true;
+  previousResultExists = true;
 }
 //displays calculations
 function updateDisplay() {
@@ -125,14 +125,9 @@ function initializeValuesBasedOnPreviousResult() {
 }
 //handles eventlisteners
 function handleNumberButtonEvent(e) {
-  if (shouldCalculateBasedOnResult) {
-    if (e.textContent == 0) {
+  if (previousResultExists) {
       resetValuesForNewCalculation();
       resetSavedResult();
-      updateDisplay();
-      return;
-    }
-    initializeValuesBasedOnPreviousResult();
   }
   if (!isNumber1Set) {
     if (isNumberTooLarge(number1 + e.textContent)) return; //checks if there is enough space for another number by adding a decimal
@@ -152,7 +147,7 @@ function handleEqualsButtonEvent(e) {
   }
 }
 function handleOperatorButtonEvent(e) {
-  if (shouldCalculateBasedOnResult){
+  if (previousResultExists){
     initializeValuesBasedOnPreviousResult();
   }
   if (isNumber1Set && isOperatorSet && number2 != "") {
@@ -191,7 +186,7 @@ clearButton.addEventListener("click", (event) =>
   handleClearButtonEvent(event.target)
 );
 decimalButton.addEventListener("click", () => {
-  if (shouldCalculateBasedOnResult){
+  if (previousResultExists){
     initializeValuesBasedOnPreviousResult();
   }
   if (!isNumber1Set && !number1.includes(".") && number1 != "") {
@@ -207,7 +202,7 @@ decimalButton.addEventListener("click", () => {
   updateDisplay();
 });
 percentageButton.addEventListener("click", (event) => {
-  if (shouldCalculateBasedOnResult) {
+  if (previousResultExists) {
     initializeValuesBasedOnPreviousResult();
   }
   if (!isNumber1Set) {
@@ -227,7 +222,7 @@ percentageButton.addEventListener("click", (event) => {
   updateDisplay();
 });
 plusMinusButton.addEventListener("click", (event) => {
-  if (shouldCalculateBasedOnResult) {
+  if (previousResultExists) {
     initializeValuesBasedOnPreviousResult();
   }
   if (!isNumber1Set) {
